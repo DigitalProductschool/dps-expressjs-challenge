@@ -12,7 +12,7 @@ NOTE: You can use ([db.service.ts](./src/services/db.service.ts)) to handle SQL 
 ## The task
 
 -   Fork this project's code
--   Design and implement REST API for creating, reading, updating, and deleting projects and their reports.
+-   Design and implement REST API for creating, reading, updating, and deleting projects and their reports
 -   Create API endpoint that returns all reports where the same word is used at least three times
 -   Optionally protect all API routes by a hardcoded auth token "Password123" 😊
 -   Push all your code to your public GitHub repository
