@@ -1,5 +1,18 @@
 # DPS Backend Coding Challenge
 
+## This repository
+
+This repository contains a very basic web application based on Typescript and Express.js. Main application file is `index.ts`. Node and npm are required.
+
+To start the application run:
+
+```
+npm install
+npm run dev
+```
+
+Once started, the application will be running on `http://localhost:3000`.
+
 ## The context
 
 You are working on a new software that should manage data about a company's projects and their reports.
