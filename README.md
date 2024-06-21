@@ -30,6 +30,7 @@ NOTE: You can use ([db.service.ts](./src/services/db.service.ts)) to handle SQL 
 -   Optionally protect all API routes by a hardcoded auth token "Password123" 😊
 -   Push all your code to your public GitHub repository
 -   Use small commits, we want to see your progress towards the solution
+-   Code clean and follow the best practices
 
 \
 After you have finished, please send us the URL to your GitHub repository.
