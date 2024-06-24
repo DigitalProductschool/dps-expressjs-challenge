@@ -34,9 +34,9 @@ NOTE: You can use ([db.service.ts](./src/services/db.service.ts)) to handle SQL 
 -   **Optional:** Secure all API routes with a hardcoded authentication token ("Password123").
 -   **Submission:** After completing the challenge, email us the URL of your GitHub repository.
 -   **Further information:**
-    -   If there is anything unclear regarding requirements, contact us by replying to this email
-    -   Use small commits, we want to see your progress towards the solution
-    -   Code clean and follow the best practices
+    -   If there is anything unclear regarding requirements, contact us by replying to our email.
+    -   Use small commits, we want to see your progress towards the solution.
+    -   Code clean and follow the best practices.
 
 \
 Happy coding!
