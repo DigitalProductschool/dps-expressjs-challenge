@@ -1,31 +1,35 @@
 import request from 'supertest';
-
-// Import the Express application to be tested
 import app from '../../src/index';
 
-
-// Describe a test suite for project routes
 describe('Project Endpoints', () => {
 	// Define a test case for creating a new project
 	it('should create a new project', async () => {
-		// Make a POST request to create a new project
 		const res = await request(app)
 			.post('/api/projects')
 			.send({
-				name: 'Test Project',
-				description: 'Test Description'
+				id: 4,
+				name: 'Another Test Project',
+				description: 'Another Test Description'
 			});
-		// Expect the response status code to be 201 Created
 		expect(res.statusCode).toEqual(201);
-		// Expect the response body to indicate one row was inserted
 		expect(res.body.changes).toEqual(1);
+
+		// Verify the project was created by querying the actual database
+		const project = await request(app).get('/api/projects/4');
+		console.log(project.body); // Log the response body to see its contents
+		expect(project.statusCode).toEqual(200);
+		expect(project.body.length).toEqual(1);
+		expect(project.body[0]).toHaveProperty('name', 'Another Test Project');
+		expect(project.body[0]).toHaveProperty('description', 'Another Test Description');
 	});
 
-
-	// Define a test case for getting all projects
-	it('should get all projects', async () => {
-		const res = await request(app).get('/api/projects');
+	// Define a test case for getting a project by ID
+	it('should get a project by ID', async () => {
+		const res = await request(app).get('/api/projects/1');
+		console.log(res.body); // Log the response body to see its contents
 		expect(res.statusCode).toEqual(200);
-		expect(res.body.length).toBeGreaterThan(0);
+		expect(res.body.length).toEqual(1);
+		expect(res.body[0]).toHaveProperty('name','');
+		expect(res.body[0]).toHaveProperty('description','');
 	});
 });

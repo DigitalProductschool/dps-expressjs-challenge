@@ -18,10 +18,12 @@ function run(sql: string, params?: (string | number)[]) {
 
 // Create a new project
 //Create(POST)
-function createProject(name: string, description: string) {
-	const sql = 'INSERT INTO projects (name, description) VALUES (?, ?)';
-	return run(sql, [name, description]);
+// Create a new project
+function createProject(id: number, name: string, description: string) {
+	const sql = 'INSERT INTO projects (id, name, description) VALUES (?, ?, ?)';
+	return run(sql, [id, name, description]);
 }
+
 
 // Function to get all projects
 //Read (GET)
@@ -31,21 +33,21 @@ function getProjects() {
 }
 
 // Function to get a project by ID
-//Read (GET)
 function getProjectById(id: number) {
-	const sql = 'SELECT * FROM projects WHERE id = ?';
+	const sql = 'SELECT * FROM projects WHERE id = CAST(? AS INTEGER)';
 	return query(sql, [id]);
 }
 
 // Function to update a project by ID
 function updateProject(id: number, name: string, description: string) {
-	const sql = 'UPDATE projects SET name = ?, description = ? WHERE id = ?';
+	const sql = 'UPDATE projects SET name = ?, description = ? WHERE id = CAST(? AS INTEGER)';
 	return run(sql, [name, description, id]);
 }
 
+
 // Function to delete a project by ID
 function deleteProject(id: number) {
-	const sql = 'DELETE FROM projects WHERE id = ?';
+	const sql = 'DELETE FROM projects WHERE id = CAST(? AS INTEGER)';
 	return run(sql, [id]);
 }
 

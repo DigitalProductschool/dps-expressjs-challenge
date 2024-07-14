@@ -4,11 +4,12 @@ import dbService from '../services/db.service';
 const router = Router();
 
 //create new project
-router.post('/',(req, res) => {
-	const { name, description} = req.body;
-	const result = dbService.createProject(name,description);
+router.post('/', (req, res) => {
+	const { id, name, description } = req.body;
+	const result = dbService.createProject(id, name, description);
 	res.status(201).json(result);
 });
+
 
 // Get all projects route handler
 router.get('/', (req, res) => {

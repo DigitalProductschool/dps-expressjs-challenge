@@ -11,7 +11,7 @@ describe('Database Service', () => {
     // Test case for the createProject function
     test('should create a new project', () => {
         // Call the createProject function with test data
-        const result = dbService.createProject('Test Project', 'Test Description');
+        const result = dbService.createProject(1,'Test Project', 'Test Description');
 
         // Assert that the result indicates one row was changed (inserted)
         expect(result.changes).toBe(1);
@@ -28,8 +28,8 @@ describe('Database Service', () => {
     // Test case for the getProjects function
     test('should retrieve all projects', () => {
         // Insert test projects into the database
-        dbService.createProject('Test Project 1', 'Test Description 1');
-        dbService.createProject('Test Project 2', 'Test Description 2');
+        dbService.createProject(1,'Test Project 1', 'Test Description 1');
+        dbService.createProject(2,'Test Project 2', 'Test Description 2');
 
         // Call the getProjects function
         const projects = dbService.getProjects();
@@ -55,8 +55,9 @@ describe('Database Service', () => {
 //Test case for the updateProject function
 test('should update a project by ID', () => {
     // Insert a test project into the database with a known ID
-    const testId = 1;
-    dbService.run('INSERT INTO projects (id, name, description) VALUES (?, ?, ?)', [testId, 'Initial Project', 'Initial Description']);
+    const testId = 5;
+    dbService.run('INSERT INTO projects (id, name, description) VALUES (CAST(? AS INTEGER), ?, ?)', [testId, 'Initial Project', 'Initial Description']);
+
 
     // Call the updateProject function to update the project's name
     const result = dbService.updateProject(testId, 'testing123', 'Initial Description');
@@ -68,7 +69,7 @@ test('should update a project by ID', () => {
     const updatedProject = dbService.getProjectById(testId);
     expect(updatedProject).toEqual([
         expect.objectContaining({
-            id: '1.0',
+            id: '5',
             name: 'testing123',
             description: 'Initial Description',
         })
@@ -80,11 +81,12 @@ test('should update a project by ID', () => {
 //Test case for the deleteProject function
 test('should delete a project by ID', () => {
     // Insert a test project into the database with a known ID
-    const testId = 2;
-    dbService.run('INSERT INTO projects (id, name, description) VALUES (?, ?, ?)', [testId, 'Test Project', 'Test Description']);
+    const testId = 6;
+    dbService.run('INSERT INTO projects (id, name, description) VALUES (CAST(? AS INTEGER), ?, ?)', [testId, 'Test Project', 'Test Description']);
+
 
     // Call the deleteProject function
-    const result = dbService.deleteProject(2);
+    const result = dbService.deleteProject(testId);
 
     // Assert that the result indicates one row was changed (deleted)
     expect(result.changes).toBe(1);
