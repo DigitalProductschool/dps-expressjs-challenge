@@ -17,9 +17,24 @@ function run(sql: string, params?: (string | number)[]) {
 }
 
 // Create a new project
+//Create(POST)
 function createProject(name: string, description: string) {
 	const sql = 'INSERT INTO projects (name, description) VALUES (?, ?)';
 	return run(sql, [name, description]);
+}
+
+// Function to get all projects
+//Read (GET)
+function getProjects() {
+	const sql = 'SELECT * FROM projects';
+	return query(sql);
+}
+
+// Function to get a project by ID
+//Read (GET)
+function getProjectById(id: number) {
+	const sql = 'SELECT * FROM projects WHERE id = ?';
+	return query(sql, [id]);
 }
 
 // Export the functions
@@ -27,4 +42,6 @@ export default {
 	query,
 	run,
 	createProject,
+	getProjects,
+	getProjectById
 };
