@@ -37,11 +37,25 @@ function getProjectById(id: number) {
 	return query(sql, [id]);
 }
 
+// Function to update a project by ID
+function updateProject(id: number, name: string, description: string) {
+	const sql = 'UPDATE projects SET name = ?, description = ? WHERE id = ?';
+	return run(sql, [name, description, id]);
+}
+
+// Function to delete a project by ID
+function deleteProject(id: number) {
+	const sql = 'DELETE FROM projects WHERE id = ?';
+	return run(sql, [id]);
+}
+
 // Export the functions
 export default {
 	query,
 	run,
 	createProject,
 	getProjects,
-	getProjectById
+	getProjectById,
+	updateProject,
+	deleteProject
 };
