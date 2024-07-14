@@ -9,7 +9,9 @@
 		"lint": "eslint src/**/*.ts",
 		"format": "eslint src/**/*.ts --fix",
 		"type-check": "tsc --noEmit",
-		"prepare": "husky"
+		"prepare": "husky",
+		"test": "jest"
+
 	},
 	"lint-staged": {
 		"**/*.ts": "eslint"

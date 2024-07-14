@@ -1,21 +1,21 @@
-// Import the sqlite library from 'better-sqlite3' for in-memory database interactions.
-import sqlite from 'better-sqlite3';
-// Import the database service module to be tested.
-import dbService from '/Users/niaquinones/IdeaProjects/dps-expressjs-challenge/src/services/db.service';
+// Import the necessary modules for testing
+import dbService from '../src/services/db.service';
 
-// Create an in-memory SQLite database for testing.
-const db = new sqlite(':memory:');
+describe('Database Service', () => {
+    // Test case for the createProject function
+    test('should create a new project', () => {
+        // Call the createProject function with test data
+        const result = dbService.createProject('Test Project', 'Test Description');
 
-// Mock the dbService methods to use the in-memory database.
-jest.mock('../src/services/db.service', () => {
-    const originalModule = jest.requireActual('../src/services/db.service');
-    return {
-        ...originalModule,
-        query: (sql: string, params?: { [key: string]: string | number | undefined }) => {
-            return params ? db.prepare(sql).all(params) : db.prepare(sql).all();
-        },
-        run: (sql: string, params?: { [key: string]: string | number | undefined }) => {
-            return params ? db.prepare(sql).run(params) : db.prepare(sql).run();
-        },
-    };
+        // Assert that the result indicates one row was changed (inserted)
+        expect(result.changes).toBe(1);
+
+        // Verify the project was created by querying the actual database
+        const project = dbService.query('SELECT * FROM projects WHERE name = ?', ['Test Project']);
+        expect(project.length).toBe(1);
+        expect(project[0]).toMatchObject({
+            name: 'Test Project',
+            description: 'Test Description',
+        });
+    });
 });
