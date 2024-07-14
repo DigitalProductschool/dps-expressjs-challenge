@@ -10,7 +10,7 @@
 		"format": "eslint src/**/*.ts --fix",
 		"type-check": "tsc --noEmit",
 		"prepare": "husky",
-		"test": "jest"
+		"test": "NODE_ENV=test jest"
 
 	},
 	"lint-staged": {

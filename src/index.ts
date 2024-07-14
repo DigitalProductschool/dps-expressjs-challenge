@@ -20,6 +20,14 @@ app.use(express.json());
 app.use('/api/projects', projectRoutes);
 app.use('/api/reports', reportRoutes);
 
-app.listen(port, () => {
-	console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+// 	console.log(`[server]: Server is running at http://localhost:${port}`);
+// });
+
+// Only start the server if not in a test environment
+if (process.env.NODE_ENV !== 'test') {
+	app.listen(port, () => {
+		console.log(`[server]: Server is running at http://localhost:${port}`);
+	});
+}
+export default app;
