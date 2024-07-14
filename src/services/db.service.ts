@@ -49,6 +49,38 @@ function deleteProject(id: number) {
 	return run(sql, [id]);
 }
 
+//CRUD Functions for reports
+// Function to create a new report
+function createReport(id: number, projectId: number, text: string) {
+	const sql = 'INSERT INTO reports (id, projectid, text) VALUES (CAST(? AS INTEGER), CAST(? AS INTEGER), ?)';
+	return run(sql, [id, projectId, text]);
+}
+// Function to get reports by project ID
+function getReportsByProjectId(projectId: number) {
+	const sql = 'SELECT * FROM reports WHERE projectid = CAST(? AS INTEGER)';
+	return query(sql, [projectId]);
+}
+
+// Function to get a report by ID
+function getReportById(id: number) {
+	const sql = 'SELECT * FROM reports WHERE id = CAST(? AS INTEGER)';
+	return query(sql, [id]);
+}
+
+// Function to update a report by ID
+function updateReport(id: number, text: string) {
+	const sql = 'UPDATE reports SET text = ? WHERE id = CAST(? AS INTEGER)';
+	return run(sql, [text, id]);
+}
+
+// Function to delete a report by ID
+function deleteReport(id: number) {
+	const sql = 'DELETE FROM reports WHERE id = CAST(? AS INTEGER)';
+	return run(sql, [id]);
+}
+
+
+
 // Export the functions
 export default {
 	query,
@@ -57,5 +89,10 @@ export default {
 	getProjects,
 	getProjectById,
 	updateProject,
-	deleteProject
+	deleteProject,
+	createReport,
+	getReportsByProjectId,
+	getReportById,
+	updateReport,
+	deleteReport
 };
