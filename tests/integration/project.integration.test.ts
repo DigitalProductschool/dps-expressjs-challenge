@@ -20,4 +20,12 @@ describe('Project Endpoints', () => {
 		// Expect the response body to indicate one row was inserted
 		expect(res.body.changes).toEqual(1);
 	});
+
+
+	// Define a test case for getting all projects
+	it('should get all projects', async () => {
+		const res = await request(app).get('/api/projects');
+		expect(res.statusCode).toEqual(200);
+		expect(res.body.length).toBeGreaterThan(0);
+	});
 });
