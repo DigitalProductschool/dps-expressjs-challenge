@@ -84,6 +84,24 @@ test('should delete a report by ID', () => {
 	expect(deletedReport.length).toBe(0);
 });
 
+// Test case for getting reports with a repeated word in the description
+test('should get reports with the word "pancake" appearing at least three times in the description', () => {
+	// Create a report with the word "pancake" repeated at least three times
+	dbService.createReport(3, 1, 'This pancake is the best pancake you will ever have, pancake lovers rejoice!');
+
+	// Use the special function to get reports with the word "pancake" repeated at least three times
+	const reports = dbService.getReportsWithRepeatedWords('pancake');
+
+	// Verify that the report with the repeated word is returned
+	expect(reports.length).toBeGreaterThan(0);
+	expect(reports).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ text: 'This pancake is the best pancake you will ever have, pancake lovers rejoice!' })
+		])
+	);
+});
+
+
 
 
 

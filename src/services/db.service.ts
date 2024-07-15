@@ -6,6 +6,12 @@ const db = new sqlite(path.resolve('./db/db.sqlite3'), {
 	fileMustExist: true,
 });
 
+interface Report {
+	id: number;
+	projectid: number;
+	text: string;
+}
+
 // Function to execute a SQL query that returns results (SELECT)
 function query(sql: string, params?: (string | number)[]) {
 	return params ? db.prepare(sql).all(...params) : db.prepare(sql).all();
@@ -81,6 +87,16 @@ function deleteReport(id: number) {
 	return run(sql, [id]);
 }
 
+// Function to get reports where a specific word appears at least three times in the description
+function getReportsWithRepeatedWords(word: string): Report[] {
+	const sql = 'SELECT * FROM reports WHERE text LIKE ?';
+	const reports = query(sql, [`%${word}%`]) as Report[];
+	return reports.filter((report: Report) => {
+		const wordCount = report.text.split(/\W+/).filter((w: string) => w.toLowerCase() === word.toLowerCase()).length;
+		return wordCount >= 3;
+	});
+}
+
 
 
 // Export the functions
@@ -96,5 +112,6 @@ export default {
 	getReportsByProjectId,
 	getReportById,
 	updateReport,
-	deleteReport
+	deleteReport,
+	getReportsWithRepeatedWords
 };
