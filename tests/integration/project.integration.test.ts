@@ -46,12 +46,37 @@ describe('Project Endpoints', () => {
 		expect(updatedProject.body[0]).toHaveProperty('description', 'Updated Project Description');
 	});
 
-	//define a test case for deleting the newly added project
-	// Test case for deleting a project by ID
-	it('should delete a project by ID', async () => {
+
+	// Define a test case for deleting a project by ID
+	it('should delete a project by ID and its corresponding reports', async () => {
+		// Create a new project
+		await request(app)
+			.post('/api/projects')
+			.send({
+				id: 4,
+				name: 'Test Project to be Deleted',
+				description: 'Test Description'
+			});
+
+		// Create corresponding reports for the project
+		await request(app)
+			.post('/api/reports')
+			.send({
+				id: 5,
+				projectid: 4,
+				text: 'Report Text for Project 4'
+			});
+
+		await request(app)
+			.post('/api/reports')
+			.send({
+				id: 6,
+				projectid: 4,
+				text: 'Another Report Text for Project 4'
+			});
+
 		// Delete the project with ID 4
-		const res = await request(app)
-			.delete('/api/projects/4');
+		const res = await request(app).delete('/api/projects/4');
 
 		// Verify the deletion was successful
 		expect(res.statusCode).toEqual(200);
@@ -59,9 +84,13 @@ describe('Project Endpoints', () => {
 
 		// Verify the project was deleted by querying the actual database
 		const deletedProject = await request(app).get('/api/projects/4');
-		console.log(deletedProject.body); // Log the response body to see its contents
 		expect(deletedProject.statusCode).toEqual(200);
 		expect(deletedProject.body.length).toEqual(0);
+
+		// Verify the corresponding reports were deleted by querying the actual database
+		const deletedReports = await request(app).get('/api/reports/project/4');
+		expect(deletedReports.statusCode).toEqual(200);
+		expect(deletedReports.body.length).toEqual(0);
 	});
 
 	// Define a test case for getting an existing project by ID

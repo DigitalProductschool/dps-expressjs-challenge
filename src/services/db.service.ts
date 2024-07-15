@@ -52,10 +52,21 @@ function updateProject(id: number, name: string, description: string) {
 
 
 // Function to delete a project by ID
+// function deleteProject(id: number) {
+// 	const sql = 'DELETE FROM projects WHERE id = CAST(? AS INTEGER)';
+// 	return run(sql, [id]);
+// }
+
+// Function to delete a project by ID and its corresponding reports
 function deleteProject(id: number) {
-	const sql = 'DELETE FROM projects WHERE id = CAST(? AS INTEGER)';
-	return run(sql, [id]);
+	const deleteReportsSql = 'DELETE FROM reports WHERE projectid = CAST(? AS INTEGER)';
+	const deleteProjectSql = 'DELETE FROM projects WHERE id = CAST(? AS INTEGER)';
+	// First, delete the corresponding reports
+	run(deleteReportsSql, [id]);
+	// Then, delete the project
+	return run(deleteProjectSql, [id]);
 }
+
 
 //CRUD Functions for reports
 // Function to create a new report

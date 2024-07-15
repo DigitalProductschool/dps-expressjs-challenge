@@ -79,11 +79,15 @@ test('should update a project by ID', () => {
 
 
 //Test case for the deleteProject function
-test('should delete a project by ID', () => {
+// Test case for the deleteProject function
+test('should delete a project by ID and its corresponding reports', () => {
     // Insert a test project into the database with a known ID
     const testId = 6;
     dbService.run('INSERT INTO projects (id, name, description) VALUES (CAST(? AS INTEGER), ?, ?)', [testId, 'Test Project', 'Test Description']);
 
+    // Insert corresponding reports for the project
+    dbService.run('INSERT INTO reports (id, projectid, text) VALUES (CAST(? AS INTEGER), CAST(? AS INTEGER), ?)', [7, testId, 'Report Text 1']);
+    dbService.run('INSERT INTO reports (id, projectid, text) VALUES (CAST(? AS INTEGER), CAST(? AS INTEGER), ?)', [8, testId, 'Report Text 2']);
 
     // Call the deleteProject function
     const result = dbService.deleteProject(testId);
@@ -94,7 +98,12 @@ test('should delete a project by ID', () => {
     // Verify the project was deleted by querying the actual database
     const deletedProject = dbService.getProjectById(testId);
     expect(deletedProject.length).toBe(0);
+
+    // Verify the corresponding reports were deleted by querying the actual database
+    const deletedReports = dbService.getReportsByProjectId(testId);
+    expect(deletedReports.length).toBe(0);
 });
+
 
 // After all tests, restore the projects table to its original state
 afterAll(() => {
