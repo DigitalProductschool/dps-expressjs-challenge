@@ -76,6 +76,51 @@ describe('Report Endpoints', () => {
 
 	});
 
+	// Define a test case for creating a new report
+	it('should create a new report', async () => {
+		const res = await request(app)
+			.post('/api/reports')
+			.send({
+				id: 3,
+				projectid: 1,
+				text: 'Test Report with repeated words pancake pancake pancake'
+			});
+		expect(res.statusCode).toEqual(201);
+		expect(res.body.changes).toEqual(1);
+	});
+
+	// Define a test case for getting reports where a specific word appears at least three times in the description
+	it('should get reports with the word "pancake" appearing at least three times in the description', async () => {
+		const word = 'pancake';
+		const res = await request(app).get(`/api/reports/special/reports-with-repeated-words/${word}`);
+		console.log(res.body); // Log the response body to see its contents
+		expect(res.statusCode).toEqual(200);
+		// Verify that the report with repeated words is returned
+		expect(res.body.length).toBeGreaterThan(0);
+		expect(res.body).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({ text: 'Test Report with repeated words pancake pancake pancake' })
+			])
+		);
+	});
+
+
+	// delete pancakes
+	it('should delete a report by ID', async () => {
+		const res = await request(app).delete('/api/reports/3');
+		// Expect the response status code to be 200 OK
+		expect(res.statusCode).toEqual(200);
+		// Expect the response body to indicate one row was deleted
+		expect(res.body.changes).toEqual(1);
+
+		// Verify the report was deleted by querying the actual database
+		const deletedReport = await request(app).get('/api/reports/3');
+		console.log(deletedReport.body); // Log the response body to see its contents
+		expect(deletedReport.statusCode).toEqual(200);
+		expect(deletedReport.body.length).toEqual(0);
+	});
+
+
 
 });
 

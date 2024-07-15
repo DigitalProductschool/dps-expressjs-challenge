@@ -52,5 +52,13 @@ router.delete('/:id', (req, res) => {
 	res.status(200).json(result);
 });
 
+// Special API endpoint to get reports where a specific word appears at least three times in the description
+router.get('/special/reports-with-repeated-words/:word', (req, res) => {
+	const { word } = req.params;
+	const reports = dbService.getReportsWithRepeatedWords(word);
+	res.status(200).json(reports);
+});
+
+
 // Export the router as the default export
 export default router;
