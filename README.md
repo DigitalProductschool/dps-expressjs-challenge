@@ -4,6 +4,26 @@
 
 This repository contains a very basic web application based on Typescript and Express.js. Main application file is `index.ts`. Node and npm are required.
 
+## Implemented Features
+
+- **Projects**
+    - Create a new project
+    - Retrieve all projects
+    - Retrieve a project by ID
+    - Update a project by ID
+    - Delete a project by ID
+
+- **Reports**
+    - Create a new report
+    - Retrieve reports by project ID
+    - Retrieve a report by ID
+    - Update a report by ID
+    - Delete a report by ID
+
+- **Special Endpoint**
+    - Retrieve all reports where a specific word appears at least three times
+
+
 ## Environment Setup
 
 Ensure you have Node.js (v14.x or later) and npm (v6.x or later) installed.  
@@ -38,5 +58,33 @@ NOTE: You can use ([db.service.ts](./src/services/db.service.ts)) to handle SQL 
     -   Use small commits, we want to see your progress towards the solution.
     -   Code clean and follow the best practices.
 
+## Features
+
+- **Projects**
+    - Create a new project
+    - Retrieve all projects
+    - Retrieve a project by ID
+    - Update a project by ID
+    - Delete a project by ID
+
+- **Reports**
+    - Create a new report
+    - Retrieve reports by project ID
+    - Retrieve a report by ID
+    - Update a report by ID
+    - Delete a report by ID
+
+- **Special Endpoint**
+    - Retrieve all reports where a specific word appears at least three times
+
+## Installation
+
+### Prerequisites
+
+- Node.js (version 14.x or higher)
+- npm (version 6.x or higher)
+
 \
 Happy coding!
+
+
