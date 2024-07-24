@@ -29,3 +29,10 @@ export const reportValidator = (
 
 	next();
 };
+
+export class NoReportFoundError extends Error {
+	constructor() {
+		super('No Report Found with the given ID');
+		this.name = 'NoReportFoundError';
+	}
+}
