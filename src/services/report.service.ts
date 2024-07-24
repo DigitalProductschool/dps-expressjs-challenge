@@ -75,3 +75,32 @@ export function deleteReport(id: string) {
 		throw error;
 	}
 }
+
+export function specialSearch() {
+	try {
+		const reports = db.query('SELECT * FROM reports') as ReportModel[];
+
+		reports.filter((report) => {
+			const wordCount = new Map<string, number>();
+			const words = report.text.split('');
+
+			words.forEach((word) => {
+				if (wordCount.has(word)) {
+					const currentCount = wordCount.get(word) ?? 0;
+					wordCount.set(word, currentCount + 1);
+				} else {
+					wordCount.set(word, 1);
+				}
+			});
+
+			wordCount.forEach((val) => {
+				if (val >= 3) return true;
+			});
+
+			return false;
+		});
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+}
