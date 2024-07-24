@@ -1,12 +1,27 @@
 // ./src/services/project.service.ts, safe way to access CRUD operations for the project schema
 import Database from 'better-sqlite3';
 import { Project, NoProjectFoundError } from '../models/projectModel';
+import { v4 as uuid } from 'uuid';
 import db from './db.service';
 
 export function getAllProjects() {
 	try {
 		const projects = db.query('SELECT * FROM projects') as Project[];
 		return projects;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+export function createProject(name: string, description: string) {
+	const id = uuid();
+
+	try {
+		db.run(
+			'INSERT INTO projects (id, name, description) VALUES (@id, @name, @description)',
+			{ id, name, description },
+		);
 	} catch (error) {
 		console.error(error);
 		throw error;
