@@ -8,6 +8,7 @@ export interface Project {
 	description: string;
 }
 
+// Validator for api controller for query requiring metadata (name, description)
 export const projectUpdateValidator = (
 	req: Request,
 	res: Response,
@@ -26,6 +27,31 @@ export const projectUpdateValidator = (
 	}
 	if (description && typeof description !== 'string') {
 		errors.push(new Error('Description must be a string if provided'));
+	}
+
+	if (errors.length > 0) {
+		return next(createError(400, errors.join(', ')));
+	}
+
+	next();
+};
+
+// Validator for api controller for query requiring id
+export const projectIdValidator = (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	const { id } = req.body;
+
+	if (!id) {
+		return next(createError(400, 'Id is required'));
+	}
+
+	const errors: Error[] = [];
+
+	if (typeof id !== 'string' || id.trim().length === 0) {
+		errors.push(new Error('Name must be a non-empty string'));
 	}
 
 	if (errors.length > 0) {
