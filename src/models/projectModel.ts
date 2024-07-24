@@ -8,19 +8,24 @@ export interface Project {
 	description: string;
 }
 
-export const projectValidator = (
+export const projectUpdateValidator = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
 ) => {
 	const { name, description } = req.body;
-	const errors: string[] = [];
+
+	if (!name && !description) {
+		return next(createError(400, 'Either name or description required'));
+	}
+
+	const errors: Error[] = [];
 
 	if (typeof name !== 'string' || name.trim().length === 0) {
-		errors.push('Name must be a non-empty string');
+		errors.push(new Error('Name must be a non-empty string'));
 	}
 	if (description && typeof description !== 'string') {
-		errors.push('Description must be a string if provided');
+		errors.push(new Error('Description must be a string if provided'));
 	}
 
 	if (errors.length > 0) {
@@ -29,3 +34,10 @@ export const projectValidator = (
 
 	next();
 };
+
+export class NoProjectFoundError extends Error {
+	constructor() {
+		super('No Project Found with the given ID');
+		this.name = 'NoProjectFoundError';
+	}
+}
