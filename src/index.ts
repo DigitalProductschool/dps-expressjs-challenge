@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import projectRouter from './routes/projectRoutes';
 import reportRouter from './routes/reportRoutes';
+import authMiddleware from './middleware/auth';
 
 dotenv.config();
 
@@ -9,6 +10,7 @@ const app: Express = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(authMiddleware);
 app.use('/api/v1/projects', projectRouter);
 app.use('/api/v1/reports', reportRouter);
 app.get('/', (req, res) => {
