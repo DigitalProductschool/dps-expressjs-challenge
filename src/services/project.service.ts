@@ -22,6 +22,7 @@ export function createProject(name: string, description: string) {
 			'INSERT INTO projects (id, name, description) VALUES (@id, @name, @description)',
 			{ id, name, description },
 		);
+		return { id, name, description } as Project;
 	} catch (error) {
 		console.error(error);
 		throw error;
@@ -100,6 +101,7 @@ export function deleteProjectById(id: string) {
 		if (result.changes === 0) {
 			throw new NoProjectFoundError();
 		}
+		db.run('DELETE FROM reports WHERE projectId = @id', { id });
 	} catch (error) {
 		console.log(error);
 		throw error;
