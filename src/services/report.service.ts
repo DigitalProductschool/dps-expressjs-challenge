@@ -99,6 +99,12 @@ export function specialSearch() {
 
 			return false;
 		});
+
+		if (reports.length == 0) {
+			throw new NoReportFoundError();
+		}
+
+		return reports;
 	} catch (error) {
 		console.log(error);
 		throw error;
