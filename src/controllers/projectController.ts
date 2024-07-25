@@ -26,7 +26,7 @@ export function getProjects(req: Request, res: Response) {
 }
 
 export function getProject(req: Request, res: Response) {
-	const { id } = req.params;
+	const id = req.params.id;
 
 	if (id.trim().length === 0) {
 		return res.status(400).json({ message: 'Id cannot be empty' });
@@ -34,7 +34,7 @@ export function getProject(req: Request, res: Response) {
 
 	try {
 		const project = getProjectById(id);
-		return project;
+		res.send(project);
 	} catch (error) {
 		if (error instanceof NoProjectFoundError) {
 			res.status(404).send(error.message);
@@ -49,8 +49,8 @@ export function createNewProject(req: Request, res: Response) {
 	const { name, description } = req.body;
 
 	try {
-		createProject(name, description);
-		res.status(201).send('Successfully Created');
+		const newProject = createProject(name, description);
+		res.status(201).send(newProject);
 	} catch (error) {
 		res.status(500).send((error as Error).message);
 	}
@@ -75,7 +75,7 @@ export const deleteProject = async (req: Request, res: Response) => {
 	const { id } = req.params;
 	try {
 		deleteProjectById(id);
-		res.status(204).send('Deleted Successfully');
+		res.status(200).send('Deleted Successfully');
 	} catch (error) {
 		if (error instanceof NoProjectFoundError) {
 			res.status(404).send(error.message);
