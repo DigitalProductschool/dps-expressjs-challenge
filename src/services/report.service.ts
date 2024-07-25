@@ -9,7 +9,7 @@ import db from './db.service';
 export function getReportsByProject(projectId: string) {
 	try {
 		const reports = db.query(
-			'SELECT * FROM projects WHERE id = @projectId',
+			'SELECT * FROM reports WHERE projectid = @projectId',
 			{ projectId },
 		) as ReportModel[];
 		return reports;
@@ -27,6 +27,7 @@ export function createReport(projectId: string, text: string) {
 			'INSERT INTO reports (id, text, projectId) VALUES (@id, @text, @projectId)',
 			{ id, text, projectId },
 		);
+		return { id, text, projectId } as ReportModel;
 	} catch (error) {
 		console.error(error);
 		throw error;
@@ -58,6 +59,7 @@ export function updateReport(id: string, text: string) {
 		if (result.changes === 0) {
 			throw new NoReportFoundError();
 		}
+		return { text, id } as ReportModel;
 	} catch (error) {
 		console.error(error);
 		throw error;
@@ -80,31 +82,34 @@ export function specialSearch() {
 	try {
 		const reports = db.query('SELECT * FROM reports') as ReportModel[];
 
-		reports.filter((report) => {
+		const filteredReports = reports.filter((report) => {
 			const wordCount = new Map<string, number>();
-			const words = report.text.split('');
+			const words = report.text.split(/\W+/);
 
 			words.forEach((word) => {
-				if (wordCount.has(word)) {
-					const currentCount = wordCount.get(word) ?? 0;
-					wordCount.set(word, currentCount + 1);
+				const lowerCaseWord = word.toLowerCase();
+				if (wordCount.has(lowerCaseWord)) {
+					const currentCount = wordCount.get(lowerCaseWord) ?? 0;
+					wordCount.set(lowerCaseWord, currentCount + 1);
 				} else {
-					wordCount.set(word, 1);
+					wordCount.set(lowerCaseWord, 1);
 				}
 			});
 
-			wordCount.forEach((val) => {
-				if (val >= 3) return true;
-			});
+			for (const count of wordCount.values()) {
+				if (count >= 3) {
+					return true;
+				}
+			}
 
 			return false;
 		});
 
-		if (reports.length == 0) {
+		if (filteredReports.length == 0) {
 			throw new NoReportFoundError();
 		}
 
-		return reports;
+		return filteredReports;
 	} catch (error) {
 		console.log(error);
 		throw error;
