@@ -1,6 +1,5 @@
 // ./src/models/reportModel.ts, model and validator for the report schema.
 import { Request, Response, NextFunction } from 'express';
-import createError from 'http-errors';
 
 export interface Report {
 	id: string;
@@ -17,41 +16,11 @@ export const reportUpdateValidator = (
 	const { text } = req.body;
 
 	if (!text) {
-		return next(createError(400, 'Id is required'));
+		return res.status(400).send("Key 'text' is required");
 	}
-
-	const errors: Error[] = [];
 
 	if (typeof text !== 'string' || text.trim().length === 0) {
-		errors.push(new Error('Name must be a non-empty string'));
-	}
-
-	if (errors.length > 0) {
-		return next(createError(400, errors.join(', ')));
-	}
-
-	next();
-};
-
-export const reportIdValidator = (
-	req: Request,
-	res: Response,
-	next: NextFunction,
-) => {
-	const { id } = req.body;
-
-	if (!id) {
-		return next(createError(400, 'Id is required'));
-	}
-
-	const errors: Error[] = [];
-
-	if (typeof id !== 'string' || id.trim().length === 0) {
-		errors.push(new Error('id must be a non-empty string'));
-	}
-
-	if (errors.length > 0) {
-		return next(createError(400, errors.join(', ')));
+		return res.status(400).send("Key 'text' must be a non-empty string");
 	}
 
 	next();
