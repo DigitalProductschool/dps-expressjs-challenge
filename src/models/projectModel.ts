@@ -1,6 +1,5 @@
 // ./src/models/projectModel.ts, model and validator for the project schema.
 import { Request, Response, NextFunction } from 'express';
-import createError from 'http-errors';
 
 export interface Project {
 	id: string;
@@ -17,45 +16,24 @@ export const projectUpdateValidator = (
 	const { name, description } = req.body;
 
 	if (!name && !description) {
-		return next(createError(400, 'Either name or description required'));
+		return res
+			.status(400)
+			.send(
+				"Either the key 'name' or 'description' is required to update the project",
+			);
 	}
 
-	const errors: Error[] = [];
+	const errors: string[] = [];
 
 	if (typeof name !== 'string' || name.trim().length === 0) {
-		errors.push(new Error('Name must be a non-empty string'));
+		errors.push("Key 'name' must be a non-empty string");
 	}
 	if (description && typeof description !== 'string') {
-		errors.push(new Error('Description must be a string if provided'));
+		errors.push("Key 'description' must be a string if provided");
 	}
 
 	if (errors.length > 0) {
-		return next(createError(400, errors.join(', ')));
-	}
-
-	next();
-};
-
-// Validator for api controller for query requiring id
-export const projectIdValidator = (
-	req: Request,
-	res: Response,
-	next: NextFunction,
-) => {
-	const { id } = req.body;
-
-	if (!id) {
-		return next(createError(400, 'Id is required'));
-	}
-
-	const errors: Error[] = [];
-
-	if (typeof id !== 'string' || id.trim().length === 0) {
-		errors.push(new Error('Name must be a non-empty string'));
-	}
-
-	if (errors.length > 0) {
-		return next(createError(400, errors.join(', ')));
+		return res.status(400).send(errors);
 	}
 
 	next();
