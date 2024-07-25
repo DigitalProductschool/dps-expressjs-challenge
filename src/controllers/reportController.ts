@@ -30,7 +30,7 @@ export function findReportById(req: Request, res: Response) {
 
 	try {
 		const report = getReportById(id);
-		return report;
+		res.send(report);
 	} catch (error) {
 		if (error instanceof NoReportFoundError) {
 			res.status(404).send(error.message);
@@ -46,8 +46,8 @@ export function createNewReport(req: Request, res: Response) {
 	const { text } = req.body;
 
 	try {
-		createReport(projectId, text);
-		res.status(201).send('Successfully Created');
+		const newReport = createReport(projectId, text);
+		res.status(201).send(newReport);
 	} catch (error) {
 		res.status(500).send((error as Error).message);
 	}
@@ -57,8 +57,8 @@ export function updateExistingReport(req: Request, res: Response) {
 	const { id } = req.params;
 	const { text } = req.body;
 	try {
-		updateReport(id, text);
-		res.status(200).send('Successfully Updated');
+		const report = updateReport(id, text);
+		res.status(200).send(report);
 	} catch (error) {
 		if (error instanceof NoReportFoundError) {
 			res.status(404).send(error.message);
@@ -72,7 +72,7 @@ export function deleteReportById(req: Request, res: Response) {
 	const { id } = req.params;
 	try {
 		deleteReport(id);
-		res.status(204).send('Deleted Successfully');
+		res.status(200).send('Deleted Successfully');
 	} catch (error) {
 		if (error instanceof NoReportFoundError) {
 			res.status(404).send(error.message);
@@ -85,7 +85,7 @@ export function deleteReportById(req: Request, res: Response) {
 export function specialReport(req: Request, res: Response) {
 	try {
 		const reports = specialSearch();
-		return reports;
+		res.send(reports);
 	} catch (error) {
 		if (error instanceof NoReportFoundError) {
 			res.status(404).send(error.message);
